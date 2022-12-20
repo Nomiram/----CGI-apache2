@@ -15,7 +15,8 @@ DEBUG = 0
 DEFAULTFILE = '/index.html'
 SEARCHPATH = '.'
 CGIEXT = ['.cgi','.py']
-HTTPVER = 'HTTP/1.1'
+HTTPVERIN = 'HTTP/1.1'
+HTTPVER = 'HTTP/1.0'
 if sys.platform == "linux":
     PYTHON = 'python3'
 elif sys.platform == "win32":
@@ -52,7 +53,7 @@ def parseHeaders(httpdata):
     httpdata = httpdata.split('\n')
     method,url,version = httpdata[0].split(' ')
     # method,url,version = getMainHeader(httpdata)
-    if version != HTTPVER:
+    if version not in [HTTPVERIN, HTTPVER]:
         print(version.encode())
         return HTTPStatus.HTTP_VERSION_NOT_SUPPORTED, b"\r\n\r\n n"
     os.environ["REQUEST_METHOD"] = method
@@ -77,6 +78,10 @@ def parseHeaders(httpdata):
                 env_key, env_value = i.split(":", maxsplit = 1) # User-Agent: Mozilla/5.0
                 env_key = env_key.upper().replace("-","_") # User-Agent to USER_AGENT
                 env_value = env_value[1:] # rem leading whitespace
+                if env_key == "COOKIE":
+                    env_key = "HTTP_COOKIE"
+                # if env_key == "HOST":
+
                 env[env_key] = env_value
                 os.environ[env_key] = env_value
     if os.path.isdir(SEARCHPATH+path):
@@ -87,7 +92,7 @@ def parseHeaders(httpdata):
         # NOT DEBUG PRINT method + url
         print(method, url, end=' ',flush=True)
 
-    if not os.path.exists(url):
+    if not os.path.exists('./'+path):
         return HTTPStatus.NOT_FOUND, DEF404SENDDATA
     ext = os.path.splitext(path)[-1].lower()
     if ext in CGIEXT:
