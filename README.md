@@ -1,6 +1,6 @@
 ## Лабораторные работы по ТРПО
 
-#### Класс HTTP
+#### [Класс HTTP](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/HTTP.cpp)
 
 Позволяет с помощью CGI и apache2 выполнять такие действия, как:
 
@@ -8,7 +8,7 @@
 2. Получение и установка Cookie - getCookie(), setCookie()
 3. Отправка предварительно созданного файла в браузер (Дополнительно) - httpSendFile()
 
-#### Класс DB
+#### [Класс DB](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/db.cpp)
 
 Предназначен для работы с NoSQL key=value базой данных
 
@@ -20,6 +20,8 @@
 2. Удаление записи - erase()
 3. Просмотр списка записей - read_all()
 4. Просмотр одной записи - read_one()
+
++ [working_with_db.cpp](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/working_with_db.cpp)
 
 #### Задание
 
@@ -53,3 +55,61 @@
 https://github.com/Nomiram/Cpp-CGI-apache2/blob/70ca72d5576be5f97e88675a14612f7de647d72f/HTTP.cpp#L138
 
 а так же некоторые служебные методы.
+
+## Лабораторная работа №3
+
+#### Задание
+
+Дополнить библиотеку [HTTP.h](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/HTTP.hpp) следующими методами: 
+
+``` C++
+std::string getHeader(std::string name);
+// возвращает значение HTTP-заголовка “name”
+std::string rawURLDecode(std::string name);// декодирует строку из 16-ричного представления в plain-text
+UploadedFile getFile(std::string name); 
+// возвращает свойства файла “name”
+int move_uploaded_file(UploadedFile tmpFile, std::string path); 
+// загружает файл “tmpFile” в директорию “path”
+```
+ * Написать [скрипт](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/working_with_files.cpp), позволяющий загружать несколько файлов в отдельную директорию на сервере. Выбрать MIME-тип содержимого и максимальный размер.
+ * Создать [скрипт](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/watch_files.py) для вывода файлов на экран с возможностью удаления любого файла.
+ * Предусмотреть [защиту от взлома](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/.htaccess).
+
+Изменения:
+
+1. [working_with_files.cpp](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/working_with_files.cpp)
+
+2. Определение типа в POST запросе и обработка
+
+https://github.com/Nomiram/Cpp-CGI-apache2/blob/82abe5bda9406fcb15ba126f67ed38c700b58e60/HTTP.cpp#L122
+
+## Лабораторная работа №4
+
+#### Задание
+
+ * Ключ сессии, сохраняемый в Cookie, именуется уникальным идентификатором через uuid().
+ * Значения сессии хранятся внутри сервера в NoSQL базе данных. В качестве таковой предлагается Redis
+ * Значения сериализуются с ключом сессии
+
+Изменения:
+
+[session.py](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/session.py)
+
+## Лабораторная работа №5
+
+#### Задание
+
+Разработать [сервер](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/tcp-server.py), который будет обрабатывать данные по протоколу HTTP. 
+
+Изменения:
+
+[tcp-server.py](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/tcp-server.py)
+
+## Инструкции по запуску:
+
+1. git clone
+2. Использовать команды описанные для каждой системы [здесь](https://github.com/Nomiram/Cpp-CGI-apache2/blob/master/run_server.txt)
+
+#### Зависимости: 
+
+Требется установленный docker

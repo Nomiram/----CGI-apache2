@@ -1,8 +1,8 @@
 Windows:
-docker run --name ubuntu-apache2 -p 80:80 -p 5000:5000 -v "$((pwd).path -replace '\\', '/'):/var/www/html/test" -it nomiram/ubuntu-apache2:v4 /bin/bash -c "/etc/init.d/apache2 start & /bin/bash"
+docker run --name ubuntu-apache2 -p 80:80 -p 5000:5000 -v "$((pwd).path -replace '\\', '/'):/var/www/html/test" -it nomiram/ubuntu-apache2 /bin/bash -c "/etc/init.d/apache2 start & /bin/bash"
 ---
-Ubuntu:
-docker run --name ubuntu-apache2 -p 80:80 -p 5000:5000 -v "$(pwd):/var/www/html/test" -it nomiram/ubuntu-apache2:v4 /bin/bash -c "/etc/init.d/apache2 start & /bin/bash"
+Linux:
+docker run --name ubuntu-apache2 -p 80:80 -p 5000:5000 -v "$(pwd):/var/www/html/test" -it nomiram/ubuntu-apache2 /bin/bash -c "/etc/init.d/apache2 start & /bin/bash"
 ---
 remove:
 docker rm $(docker ps -aqf "name=ubuntu-apache2")
