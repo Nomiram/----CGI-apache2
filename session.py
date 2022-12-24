@@ -49,11 +49,12 @@ class HTTP:
     def __init__(self) -> None:
         self.method = os.getenv("REQUEST_METHOD")
         # cookies parsing
-        rawcookie = os.getenv("HTTP_COOKIE").split('; ')
-        if rawcookie != "":
-            for coc in rawcookie:
-                key, val = coc.split('=')
-                self.cookie[key] = val
+        if os.getenv("HTTP_COOKIE"):
+            rawcookie = os.getenv("HTTP_COOKIE").split('; ')
+            if rawcookie != "":
+                for coc in rawcookie:
+                    key, val = coc.split('=')
+                    self.cookie[key] = val
         # post data parsing
         if self.method == 'POST':
             rawpost = input().split('&')
