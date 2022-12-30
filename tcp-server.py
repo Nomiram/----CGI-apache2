@@ -68,22 +68,26 @@ def parseHeaders(httpdata):
     os.environ['QUERY_STRING'] = getparams
     postdata = ''
     flag_post = 0
-    for i in httpdata:
+    lenthOfHttpData = len(httpdata)
+    for iter, dataInHttp in enumerate(httpdata):
         if flag_post:
-            postdata += i+'\n'
-        elif i == '':
+            if iter == lenthOfHttpData - 1:
+                postdata += dataInHttp
+            else:
+                postdata += dataInHttp+'\n'
+        elif dataInHttp == '':
             flag_post=1
         else:
-            if ':' in i:
-                env_key, env_value = i.split(":", maxsplit = 1) # User-Agent: Mozilla/5.0
-                env_key = env_key.upper().replace("-","_") # User-Agent to USER_AGENT
-                env_value = env_value[1:] # rem leading whitespace
+            if ':' in dataInHttp:
+                env_key, env_value = dataInHttp.split(":", maxsplit = 1)
+                env_key = env_key.upper().replace("-","_")
+                env_value = env_value[1:]
                 if env_key == "COOKIE":
                     env_key = "HTTP_COOKIE"
-                # if env_key == "HOST":
 
                 env[env_key] = env_value
                 os.environ[env_key] = env_value
+
     if os.path.isdir(SEARCHPATH+path):
         path += DEFAULTFILE
     if DEBUG:
@@ -168,6 +172,7 @@ def main():
                 # data = drecv
                 # if method != 'GET':
                 while True:
+                    connection.sendall(b'HTTP 100 Continue\n\n')
                     time.sleep(0.5) # waiting browser to send data
                     drecv = connection.recv(2048)
                     # time.sleep(0.5)
