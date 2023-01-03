@@ -30,5 +30,6 @@ exit
 echo cd y9017159.beget.tech/public_html/cgi/
 echo mput *.cgi
 echo mput *.py
+echo mput *.html
 echo quit
 exit /b
