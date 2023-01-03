@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+'''show requesting files'''
 import os
+import base64
+import mimetypes
+
 print("Content-Type: text/html; charset=utf-8\r\n\r\n")
 print()
 print()
@@ -27,6 +31,17 @@ for file in files:
         <input type="submit" value="Delete this file">
     </form>
     ''')
+    data = ""
+    if mimetypes.guess_type(file)[0]:
+        if mimetypes.guess_type(file)[0].split("/", 1)[0] == 'image':
+            with(open(file,"rb")) as f:
+                data = f.read()
+            b64encode_data = base64.b64encode(data)
+            base64_str = b64encode_data.decode('utf-8')
+            src = 'data: ' + mimetypes.guess_type(file)[0] + ';base64,' + base64_str
+            print(f'<img src="{src}">')
+            continue
+
     with(open(file,"r",encoding='utf8')) as f:
         contents = []
         while line := f.readline():
