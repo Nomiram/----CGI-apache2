@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+'''Http sessions, store in redis'''
 import os
+import sys
 import io
 import uuid
 import redis
@@ -24,7 +26,7 @@ class Session:
         if ch is None:
             return None
         else:
-            return (ch)
+            return ch
 
 def print_to_string(*args, **kwargs):
     '''
@@ -99,8 +101,15 @@ class HTTP:
         print(self.out)
 
 http = HTTP()
-ses = Session()
+ses = None
 http.print('<a href="./">Up</a>')
+try:
+    ses = Session()
+    ses.redis.ping()
+except redis.ConnectionError:
+    http.print('Failed connection to redis')
+    http.send()
+    sys.exit(0)
 if http.cookie.get('session'):
     ses.sessionID = http.cookie['session']
 else:
@@ -120,7 +129,7 @@ if http.method == "POST":
 if (ses.get('login') is None) or (ses.get('login') == b'false'):
     http.send_file("login.html")
     http.send()
-    exit(0)
+    sys.exit(0)
 
 if http.get.get("logout"):
     http.setcookie["session"] = ""
@@ -129,7 +138,7 @@ if http.get.get("logout"):
     http.print('logout')
     http.print('<a href="session.py">click to login</a>')
     http.send()
-    exit(0)
+    sys.exit(0)
 
 http.print("you UID: ", ses.sessionID)
 
