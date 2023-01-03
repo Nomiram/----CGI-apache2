@@ -23,6 +23,9 @@ int main()
         if (res != ""){
             cout <<"{ \"" << http.escaping(getparam) << "\": \"" <<http.escaping(res) << "\"}";
         }
+        else{
+            cout << "{\"status\": [404, \"Not Found\"]}";
+        }
     }
     if (getallparam != ""){
         std::map<string, string> *res = db.read_all();
@@ -42,7 +45,7 @@ int main()
         http.setCookie("get", http.rawURLDecode(setparam));
         int res = db.write(http.rawURLDecode(setparam), http.rawURLDecode(string(http.httpPost("value"))));
         if (res == 0){
-            cout << "{\"status\": [201, \"OK\"]}";
+            cout << "{\"status\": [201, \"Created\"]}";
         }else{
             cout << "{\"status\": [500, \"Server Error\"]}";
         }
@@ -51,7 +54,7 @@ int main()
     if (eraseparam != ""){
         int res = db.erase(http.rawURLDecode(eraseparam));
         if (res == 0){
-            cout << "{\"status\": [201, \"OK\"]}";
+            cout << "{\"status\": [200, \"OK\"]}";
         }else{
             cout << "{\"status\": [500, \"Server Error\"]}";
         }

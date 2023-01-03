@@ -21,6 +21,9 @@ int main()
     if(http.httpGet("gui")!="false"){
         http.httpSendFile("uploadFile.html");
     }
+    if (http.filesData.begin() == http.filesData.end()){
+        cout <<"No data" << "</br>";
+    }
     for(auto i = http.filesData.begin();i != http.filesData.end();i++){
         auto key = (*i).first;
         auto val = (*i).second;
